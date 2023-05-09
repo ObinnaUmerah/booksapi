@@ -22,6 +22,10 @@ public class Author {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Book> bookList;
 
+    public Author(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Author(Long id, String name, String description) {
         this.id = id;
