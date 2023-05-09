@@ -1,14 +1,14 @@
 package com.books.project.controller;
 
 
+import com.books.project.exception.InformationExistException;
 import com.books.project.model.Author;
 import com.books.project.repository.AuthorRepository;
+import com.books.project.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +17,14 @@ import java.util.List;
 @RequestMapping("/api")
 public class AuthorController {
 
-    private AuthorRepository authorRepository;
 
     @Autowired
-    public void setAuthorRepository(AuthorRepository authorRepositoryRepository){
-        this.authorRepository = authorRepository;
-    }
+    private AuthorService authorService;
+
+//    @Autowired
+//    public void setAuthorRepository(AuthorRepository authorRepositoryRepository){
+//        this.authorRepository = authorRepository;
+//    }
 
     static HashMap<String, Object> message = new HashMap<>();
 
@@ -32,8 +34,8 @@ public class AuthorController {
     }
 
 //    @GetMapping(path = "/books/")
-//    public ResponseEntity<?> getAllBooks() {
-//        List<Author> bookList = authorRepository.getAllBooks(); (bookList.isEmpty()) {
+//    public ResponseEntity<?> getAllAuthors() {
+//        List<Author> bookList = authorRepository.getAllAuthors(); (bookList.isEmpty()) {
 //            message.put("message", "cannot find any books ");
 //            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
 //        } else {
@@ -41,7 +43,36 @@ public class AuthorController {
 //            message.put("data", bookList);
 //            return new ResponseEntity<>(message, HttpStatus.OK);
 //        }
+
+//    @PostMapping(path = "/authors/")
+//    public Author createAuthor(@RequestBody Author authorObject) {
+//        System.out.println("service calling createAuthor ==>");
+//
+//        Author category = authorRepository.findByName(authorObject.getName());
+//        if (category != null) {
+//            throw new InformationExistException("category with name " + category.getName() + " already exists");
+//        } else {
+//            return authorRepository.save(authorObject);
+//        }
+//    }
+
+    @PostMapping("/author/")
+    public ResponseEntity<?> createAuthor(@RequestBody Author book) {
+        Author newAuthor = authorService.createAuthor(book);
+        if (newAuthor != null) {
+           message.put("message", "success");
+            message.put("data", newAuthor);
+           return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } else {
+            message.put("message", "unable to create a book at this time");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+        }
+
     }
+}
+
+
 
 
     //@GetMapping(path ="/")
