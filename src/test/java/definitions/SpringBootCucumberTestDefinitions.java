@@ -40,4 +40,14 @@ public class SpringBootCucumberTestDefinitions {
         System.out.println(response.body());
     }
 
+
+    @Given("There is an author")
+    public void thereIsAnAuthor() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).get(BASE_URL + port + "/api/categories/1");
+
+
+    }
 }
