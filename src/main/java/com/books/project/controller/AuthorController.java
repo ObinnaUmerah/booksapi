@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -68,6 +69,22 @@ public class AuthorController {
             return new ResponseEntity<>(message, HttpStatus.OK);
 //        }
         }
+
+    }
+
+    @GetMapping("/author/1")
+    public ResponseEntity<?> getAuthor(@PathVariable(value = "authorId") Long authorId){
+        Optional<Author> author = authorService.getAuthorById(authorId);
+        if(author.isPresent()){
+            message.put("message", "success");
+//            message.put("data", author.get());
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        else{
+//            message.put("message", "cannot find book with id " + bookId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
 
     }
 }
