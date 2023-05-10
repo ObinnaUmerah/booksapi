@@ -58,8 +58,8 @@ public class AuthorController {
 //    }
 
     @PostMapping("/author/")
-    public ResponseEntity<?> createAuthor(@RequestBody Author book) {
-        Author newAuthor = authorService.createAuthor(book);
+    public ResponseEntity<?> createAuthor(@RequestBody Author author) {
+        Author newAuthor = authorService.createAuthor(author);
         if (newAuthor != null) {
            message.put("message", "success");
             message.put("data", newAuthor);
@@ -72,22 +72,23 @@ public class AuthorController {
 
     }
 
-    @GetMapping("/author/1")
+    @GetMapping("/author/{authorId}")
     public ResponseEntity<?> getAuthor(@PathVariable(value = "authorId") Long authorId){
         Optional<Author> author = authorService.getAuthorById(authorId);
-        if(author.isPresent()){
-            message.put("message", "success");
-//            message.put("data", author.get());
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-        else{
+//        if(author.isPresent()){
+//            message.put("message", "success");
+////            message.put("data", author.get());
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+
+
+
 //            message.put("message", "cannot find book with id " + bookId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
 
 
     }
-}
+
 
 
 
