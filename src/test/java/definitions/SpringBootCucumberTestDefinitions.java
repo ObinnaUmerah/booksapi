@@ -48,6 +48,5 @@ public class SpringBootCucumberTestDefinitions {
         request.header("Content-Type", "application/json");
         response = request.body(request.toString()).get(BASE_URL + port + "/api/categories/1");
 
-
     }
 }
