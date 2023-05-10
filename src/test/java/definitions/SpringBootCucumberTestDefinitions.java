@@ -2,6 +2,7 @@ package definitions;
 
 import com.books.project.LibraryApplication;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
@@ -9,6 +10,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Assert;
+import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
@@ -40,13 +43,21 @@ public class SpringBootCucumberTestDefinitions {
         System.out.println(response.body());
     }
 
+    @Then("Check if the book is published")
+    public void checkIfTheBookIsPublished() {
 
-    @Given("There is an author")
-    public void thereIsAnAuthor() {
-        RestAssured.baseURI = BASE_URL;
-        RequestSpecification request = RestAssured.given();
-        request.header("Content-Type", "application/json");
-        response = request.body(request.toString()).get(BASE_URL + port + "/api/categories/1");
-
+        Assert.assertEquals(201, response.getStatusCode());
     }
+
+
+//    @Given("There is an author")
+//    public void thereIsAnAuthor() {
+//        RestAssured.baseURI = BASE_URL;
+//        RequestSpecification request = RestAssured.given();
+//        request.header("Content-Type", "application/json");
+//        response = request.body(request.toString()).get(BASE_URL + port + "/api/author/1");
+//
+//    }
+
+
 }

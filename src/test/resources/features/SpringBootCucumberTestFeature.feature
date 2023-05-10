@@ -5,6 +5,6 @@ Feature: Rest API Functionalities
 #    When The author has a book
 #    Then The author's book is shown
     When An author publishes a book
-#    Then Check if the book is published
+    Then Check if the book is published
 #    When The aut hor removes a book
-    Given There is an author
+#    Given There is an author
