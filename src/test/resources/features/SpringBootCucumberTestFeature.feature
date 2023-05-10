@@ -7,3 +7,4 @@ Feature: Rest API Functionalities
     When An author publishes a book
 #    Then Check if the book is published
 #    When The author removes a book
+    Given There is an author
