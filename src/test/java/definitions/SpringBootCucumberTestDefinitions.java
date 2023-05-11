@@ -1,6 +1,7 @@
 package definitions;
 
 import com.books.project.LibraryApplication;
+import com.books.project.model.Author;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -28,7 +29,8 @@ public class SpringBootCucumberTestDefinitions {
     String port;
 
     private static Response response;
-    //private
+
+    private static Author author = new Author("Paul Bunyon", "A very wise man");
 
     @When("An author publishes a book")
     public void authorAddsABookToReadingList() throws JSONException {
@@ -38,9 +40,8 @@ public class SpringBootCucumberTestDefinitions {
         JSONObject requestBody = new JSONObject();
         requestBody.put("name", "Jack Wayne");
         requestBody.put("description", "An author from the 16th century");
-        requestBody.put("Content-Type", "application/json");
-        response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/author/");
-        System.out.println(response.body());
+      request.header("Content-Type", "application/json");
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/authors/");
     }
 
     @Then("Check if the book is published")
@@ -50,14 +51,28 @@ public class SpringBootCucumberTestDefinitions {
     }
 
 
-//    @Given("There is an author")
-//    public void thereIsAnAuthor() {
-//        RestAssured.baseURI = BASE_URL;
-//        RequestSpecification request = RestAssured.given();
-//        request.header("Content-Type", "application/json");
-//        response = request.body(request.toString()).get(BASE_URL + port + "/api/author/1");
-//
-//    }
+    @Given("There is an author")
+    public void thereIsAnAuthor() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).get(BASE_URL + port + "/api/authors/1");
+
+    }
 
 
+    @When("The author wants to revise his book")
+    public void theAuthorWantsToReviseHisBook() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).get(BASE_URL + port + "/api/authors/1");
+        response = request.body(request.toString()).put(BASE_URL + port + "/api/authors/1");
+    }
+
+
+    @Then("Release new copies of that book")
+    public void releaseNewCopiesOfThatBook() {
+        Assert.assertEquals(200, response.getStatusCode());
+    }
 }
