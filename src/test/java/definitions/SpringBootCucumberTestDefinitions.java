@@ -62,17 +62,33 @@ public class SpringBootCucumberTestDefinitions {
 
 
     @When("The author wants to revise his book")
-    public void theAuthorWantsToReviseHisBook() {
+    public void theAuthorWantsToReviseHisBook() throws JSONException {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("name", "Dr. Seuss");
+        requestBody.put("description","A well-known children books author");
         request.header("Content-Type", "application/json");
-        response = request.body(request.toString()).get(BASE_URL + port + "/api/authors/1");
-        response = request.body(request.toString()).put(BASE_URL + port + "/api/authors/1");
+        response = request.body(requestBody.toString()).put(BASE_URL + port + "/api/authors/1");
     }
+
 
 
     @Then("Release new copies of that book")
     public void releaseNewCopiesOfThatBook() {
+        Assert.assertEquals(200, response.getStatusCode());
+    }
+
+    @When("The author now wants to delete the original copy")
+    public void theAuthorNowWantsToDeleteTheOriginalCopy() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).delete(BASE_URL + port + "/api/authors/1");
+    }
+
+    @Then("The book is no longer available for purchase")
+    public void theBookIsNoLongerAvailableForPurchase() {
         Assert.assertEquals(200, response.getStatusCode());
     }
 }

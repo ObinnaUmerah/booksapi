@@ -6,6 +6,6 @@ Feature: Rest API Functionalities
     Then Check if the book is published
     When The author wants to revise his book
     Then Release new copies of that book
-#    Given A list of books are available
-#    When The aut hor removes a book
+    When The author now wants to delete the original copy
+    Then The book is no longer available for purchase
 
