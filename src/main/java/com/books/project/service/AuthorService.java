@@ -77,5 +77,20 @@ public class AuthorService {
         }
     }
 
+    public Book getAuthorBook(Long authorId, Long bookId){
+        System.out.println("Service calling getAuthorRecipe ===>");
+        Optional<Author> author = authorRepository.findById(authorId);
+        if(author.isPresent()) {
+            Optional<Book> book = bookRepository.findByAuthorId(authorId).stream().filter(p -> p.getId().equals(bookId)).findFirst();
+            if(book.isEmpty()) {
+                throw new InformationNotFoundException("book with id " + bookId + " not found");
+            }else {
+                return book.get();
+            }
+        } else {
+            throw new InformationNotFoundException("author with id " + authorId + " not found");
+        }
+    }
+
 
 }
