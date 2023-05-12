@@ -4,6 +4,7 @@ package com.books.project.controller;
 import com.books.project.exception.InformationExistException;
 import com.books.project.exception.InformationNotFoundException;
 import com.books.project.model.Author;
+import com.books.project.model.Book;
 import com.books.project.repository.AuthorRepository;
 import com.books.project.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class AuthorController {
     private AuthorService authorService;
     static HashMap<String, Object> message = new HashMap<>();
 
+
+
     @GetMapping(path = "/hello-world/")
     public String helloWorld() {
         return "hello World";
@@ -39,7 +42,6 @@ public class AuthorController {
         } else {
             message.put("message", "unable to create a book at this time");
             return new ResponseEntity<>(message, HttpStatus.OK);
-//        }
         }
 
     }
@@ -86,6 +88,20 @@ public class AuthorController {
         }
     }
 
+    @PostMapping("/authors/{authorId}/books")
+    public ResponseEntity<?> createAuthorBook(
+            @PathVariable(value = "authorId") Long authorId, @RequestBody Book bookObject) {
+        Book newBook = authorService.createAuthorBook(authorId, bookObject);
+        if (newBook != null) {
+            message.put("message", "success");
+            message.put("data", newBook);
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } else {
+            message.put("message", "cannot find book with id " + authorId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
+    }
 
 }
 
