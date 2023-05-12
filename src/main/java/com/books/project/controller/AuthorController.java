@@ -123,23 +123,29 @@ public class AuthorController {
              @PathVariable(value = "authorId") Long authorId,
              @PathVariable(value = "bookId") Long bookId,
              @RequestBody Book bookObject) {
-       Optional<Book> book = Optional.ofNullable(authorService.updateAuthorBook(authorId, bookId, bookObject));
-       if(book.isEmpty()){
-           message.put("message", "cannot find book or author with id " + authorId);
-           return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-       } else {
-           message.put("message", "book with id " + authorId + " has been successfully updated");
-           message.put("data", book.get());
-           return new ResponseEntity<>(message, HttpStatus.OK);
-       }
+        Optional<Book> book = Optional.ofNullable(authorService.updateAuthorBook(authorId, bookId, bookObject));
+        if (book.isEmpty()) {
+            message.put("message", "cannot find book or author with id " + authorId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            message.put("message", "book with id " + authorId + " has been successfully updated");
+            message.put("data", book.get());
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+    }
+
+       @DeleteMapping("/authors/{authorId}/books/{bookId}")
+        public ResponseEntity<HashMap<String, String>> deleteAuthorBook(
+                @PathVariable(value = "authorId") Long authorId, @PathVariable(value = "bookId") Long bookId){
+                authorService.deleteAuthorBook(authorId, bookId);
+                HashMap<String, String> responseMessage = new HashMap<>();
+                responseMessage.put("status", "book with id: " + bookId + " was successfully deleted.");
+                return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+
+        }
 
     }
 
-
-
-
-
-}
 
 
 
