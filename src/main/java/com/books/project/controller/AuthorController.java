@@ -103,6 +103,24 @@ public class AuthorController {
 
     }
 
+    @GetMapping("/authors/{authorId}/books/{bookId}")
+    public ResponseEntity<?> getAuthorBook(
+            @PathVariable(value = "authorId") Long authorId, @PathVariable(value = "bookId") Long bookId) {
+       Optional<Book> book = Optional.ofNullable(authorService.getAuthorBook(authorId, bookId));
+        if(book.isPresent()) {
+            message.put("message", "success");
+            message.put("data", book);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        else {
+            message.put("message", "cannot find book with id " + authorId);
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
+
 }
 
 
