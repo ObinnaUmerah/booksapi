@@ -92,5 +92,17 @@ public class AuthorService {
         }
     }
 
+    public Book updateAuthorBook(Long authorId, Long bookId, Book bookobject){
+        try {
+            Book book = (bookRepository.findByAuthorId(authorId).stream().filter(p -> p.getId().equals(bookId)).findFirst().get());
+            book.setName(bookobject.getName());
+            book.setDescription(bookobject.getDescription());
+            book.setIsbn(bookobject.getIsbn());
+            return bookRepository.save(book);
+        } catch(NoSuchElementException e) {
+            throw new InformationNotFoundException("book or author not found");
+        }
+    }
+
 
 }

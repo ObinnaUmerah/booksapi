@@ -118,6 +118,24 @@ public class AuthorController {
         }
     }
 
+    @PutMapping("/authors/{authorId}/books/{bookId}")
+    public ResponseEntity<?> updateAuthorBook(
+             @PathVariable(value = "authorId") Long authorId,
+             @PathVariable(value = "bookId") Long bookId,
+             @RequestBody Book bookObject) {
+       Optional<Book> book = Optional.ofNullable(authorService.updateAuthorBook(authorId, bookId, bookObject));
+       if(book.isEmpty()){
+           message.put("message", "cannot find book or author with id " + authorId);
+           return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+       } else {
+           message.put("message", "book with id " + authorId + " has been successfully updated");
+           message.put("data", book.get());
+           return new ResponseEntity<>(message, HttpStatus.OK);
+       }
+
+    }
+
+
 
 
 
