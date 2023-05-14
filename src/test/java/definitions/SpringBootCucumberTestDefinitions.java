@@ -7,6 +7,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ public class SpringBootCucumberTestDefinitions {
         JSONObject requestBody = new JSONObject();
         requestBody.put("name", "Jack Wayne");
         requestBody.put("description", "An author from the 16th century");
-      request.header("Content-Type", "application/json");
+        request.header("Content-Type", "application/json");
         response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/authors/");
     }
 
@@ -89,6 +90,77 @@ public class SpringBootCucumberTestDefinitions {
 
     @Then("The book is no longer available for purchase")
     public void theBookIsNoLongerAvailableForPurchase() {
+        Assert.assertEquals(200, response.getStatusCode());
+    }
+
+    @When("An author writes a book")
+    public void anAuthorWritesABook() throws JSONException {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+
+        JSONObject requestBody = new JSONObject();
+        request.header("Content-Type", "application/json");
+        requestBody.put("name", "A Carnivorous Carnival");
+        requestBody.put("description", "A Great Book");
+        requestBody.put("isbn", "390280");
+        response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/authors/1/books");
+    }
+
+    @Then("The book is written")
+    public void theBookIsWritten() {
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        String message = jsonPathEvaluator.get("message");
+        Assert.assertEquals(201, response.getStatusCode());
+    }
+
+    @When("The user wants to retrieve an author's book")
+    public void theUserWantsToRetrieveAnAuthorSBook() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).get(BASE_URL + port + "/api/authors/1/books/1");
+    }
+
+
+    @Then("The user has access to the author's book")
+    public void theUserHasAccessToTheAuthorSBook() {
+        Assert.assertEquals(200, response.getStatusCode());
+    }
+
+
+    @When("The user wants to edit the author's book")
+    public void theUserWantsToEditTheAuthorSBook() throws JSONException {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+
+        JSONObject requestBody = new JSONObject();
+        request.header("Content-Type", "application/json");
+        requestBody.put("name", "Tne End");
+        requestBody.put("description", "The last book in the series.");
+        requestBody.put("isbn", "390280");
+        response = request.body(requestBody.toString()).put(BASE_URL + port + "/api/authors/1/books/1");
+
+    }
+
+    @Then("The author's book is edited")
+    public void theAuthorSBookIsEdited() {
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        String message = jsonPathEvaluator.get("message");
+        Assert.assertEquals(200, response.getStatusCode());
+    }
+
+    @When("The user removes the author's book from his library")
+    public void theUserRemovesTheAuthorSBookFromHisLibrary() {
+        RestAssured.baseURI = BASE_URL;
+        RequestSpecification request = RestAssured.given();
+        request.header("Content-Type", "application/json");
+        response = request.body(request.toString()).delete(BASE_URL + port + "/api/authors/1/books/1");
+    }
+
+    @Then("The book is removed")
+    public void theBookIsRemoved() {
+        JsonPath jsonPathEvaluator = response.jsonPath();
+        String message = jsonPathEvaluator.get("message");
         Assert.assertEquals(200, response.getStatusCode());
     }
 }
