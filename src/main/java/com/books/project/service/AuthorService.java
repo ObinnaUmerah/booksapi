@@ -59,9 +59,9 @@ public class AuthorService {
 
     /**
      * Updates the author's information
-     * @param authorId
-     * @param authorObject
-     * @return
+     * @param authorId The id of the author the user wants to update
+     * @param authorObject The new author object
+     * @return The update author object
      * @throws InformationNotFoundException
      */
     public Optional<Author> updateAuthor(Long authorId, Author authorObject) throws InformationNotFoundException {
@@ -76,18 +76,29 @@ public class AuthorService {
         }
     }
 
+    /**
+     * Deletes the author's information
+     * @param authorId The id of the author that the user wants to delete
+     * @return The deleted author
+     * @throws InformationNotFoundException
+     */
     public Optional<Author> deleteAuthor(Long authorId) throws InformationNotFoundException {
-        Optional<Author> book = authorRepository.findById(authorId);
-        if (book.isPresent()) {
+        Optional<Author> author = authorRepository.findById(authorId);
+        if (author.isPresent()) {
             authorRepository.deleteById(authorId);
-            return book;
+            return author;
         } else {
-            throw new InformationNotFoundException("book with id " + authorId + " not found");
+            throw new InformationNotFoundException("author with id " + authorId + " not found");
         }
     }
 
+    /**
+     * Creates a book for an author
+     * @param authorId The id of the author
+     * @param bookObject The book object
+     * @return The new book
+     */
     public Book createAuthorBook(Long authorId, Book bookObject) {
-        System.out.println("service calling createCategoryRecipe ==>");
         try {
             Optional author = authorRepository.findById(authorId);
             bookObject.setAuthor((Author) author.get());
@@ -98,6 +109,12 @@ public class AuthorService {
         }
     }
 
+    /**
+     * Gets the book from an author
+     * @param authorId The id of the author
+     * @param bookId The id of the book
+     * @return The book from the specified author
+     */
     public Book getAuthorBook(Long authorId, Long bookId){
         System.out.println("Service calling getAuthorRecipe ===>");
         Optional<Author> author = authorRepository.findById(authorId);
@@ -113,6 +130,13 @@ public class AuthorService {
         }
     }
 
+    /**
+     * Updates the book of an author
+     * @param authorId The id of the author
+     * @param bookId The id of the book
+     * @param bookobject The book object
+     * @return The newly updated book object
+     */
     public Book updateAuthorBook(Long authorId, Long bookId, Book bookobject){
         try {
             Book book = (bookRepository.findByAuthorId(authorId).stream().filter(p -> p.getId().equals(bookId)).findFirst().get());
@@ -125,6 +149,11 @@ public class AuthorService {
         }
     }
 
+    /**
+     * Deletes the book of an author
+     * @param authorId The id of the author
+     * @param bookId The id of the book
+     */
     public void deleteAuthorBook(Long authorId, Long bookId){
         try {
             Book book = (bookRepository.findByAuthorId(authorId).stream().filter(p -> p.getId().equals(bookId)).findFirst()).get();
