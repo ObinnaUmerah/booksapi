@@ -112,3 +112,11 @@ As a user, I should be able to delete a book that belongs to a single author.
 Visit the "Spring Boot Rest API" Link above and create a package via the initializer. Unzip the folder and open
 a new project in IntelliJ. Once that is done you will need to copy and paste the dependencies that I have above into 
 your own pom.xml file.
+
+### Credits
+This was a solo project that I worked but there are some credits that I would like to give. My instructors
+[Suresh Sigera](https://github.com/sureshmelvinsigera) and [Drhubo Chowdhury](https://www.linkedin.com/in/dhrubo-hasan/)
+provided great assistance and pointers during this course of this project. I am very grateful to them.
+
+### Farewell
+Thank you for your time. This project was created by Obinna Umerah.
