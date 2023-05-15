@@ -31,7 +31,11 @@ public class AuthorController {
         return "hello World";
     }
 
-
+    /**
+     * Contains the endpoint of the post request for the authors' table.
+     * @param author An author object that will be added to the authors' table.
+     * @return A status code that shows if the post request was successful or not.
+     */
     @PostMapping("/authors/")
     public ResponseEntity<?> createAuthor(@RequestBody Author author) {
         Author newAuthor = authorService.createAuthor(author);
@@ -46,6 +50,11 @@ public class AuthorController {
 
     }
 
+    /**
+     * Contains the endpoint of the get request for the authors' table.
+     * @param authorId The index of the author that the user wants to retrieve.
+     * @return A status code that shows if the get request was successful or not.
+     */
     @GetMapping("/authors/{authorId}")
     public ResponseEntity<?> getAuthor(@PathVariable(value = "authorId") Long authorId) {
         Optional<Author> author = authorService.getAuthorById(authorId);
@@ -60,7 +69,14 @@ public class AuthorController {
     }
 
 
-    // http://localhost:8080
+    /**
+     * Contains the endpoint of the put request for the authors' table.
+     * @param authorId The id of the author you want to update.
+     * @param authorObject The author object that will be replacing another author in the table.
+     * @return A status code that shows if the put request was successful or not.
+     * @throws InformationNotFoundException An exception that is thrown is no author is found for the passed in
+     * authorId.
+     */
     @PutMapping("/authors/{authorId}")
     public ResponseEntity<?> updateAuthor(@PathVariable(value = "authorId") Long authorId, @RequestBody Author authorObject) throws InformationNotFoundException {
         Optional<Author> bookToUpdate = authorService.updateAuthor(authorId, authorObject);
@@ -75,6 +91,11 @@ public class AuthorController {
 
     }
 
+    /**
+     * Contains the endpoint of the delete request for the authors' table.
+     * @param authorId The id of the author you want to delete from the table.
+     * @return A status code that shows if the delete request was successful or not.
+     */
     @DeleteMapping("/authors/{authorId}")
     public ResponseEntity<?> deleteAuthor(@PathVariable(value = "authorId") Long authorId) {
         Optional<Author> authorToDelete = authorService.deleteAuthor(authorId);
@@ -88,6 +109,12 @@ public class AuthorController {
         }
     }
 
+    /**
+     * Contains the endpoint of the post request for the books' table.
+     * @param authorId The id of the author that the user wants to add a book to.
+     * @param bookObject The book that is being added to authors' list
+     * @return A status code that shows if the post request was successful or not.
+     */
     @PostMapping("/authors/{authorId}/books")
     public ResponseEntity<?> createAuthorBook(
             @PathVariable(value = "authorId") Long authorId, @RequestBody Book bookObject) {
@@ -103,6 +130,12 @@ public class AuthorController {
 
     }
 
+    /**
+     * Contains the endpoint of the get  request for the books' table.
+     * @param authorId The id of the author that the user want to access.
+     * @param bookId The id of the book that the user wants to retrieve.
+     * @return A status code that shows if the get request was successful or not.
+     */
     @GetMapping("/authors/{authorId}/books/{bookId}")
     public ResponseEntity<?> getAuthorBook(
             @PathVariable(value = "authorId") Long authorId, @PathVariable(value = "bookId") Long bookId) {
@@ -118,6 +151,13 @@ public class AuthorController {
         }
     }
 
+    /**
+     * Contains the endpoint of the post request for the books' table.
+     * @param authorId The id of author whose book the user wants to edit
+     * @param bookId The id of the book the user wants to edit
+     * @param bookObject The book object containing the information that will replace the current one.
+     * @return A status code that shows if the put request was successful or not.
+     */
     @PutMapping("/authors/{authorId}/books/{bookId}")
     public ResponseEntity<?> updateAuthorBook(
              @PathVariable(value = "authorId") Long authorId,
@@ -134,6 +174,12 @@ public class AuthorController {
         }
     }
 
+    /**
+     * Contains the endpoint of the delete request for the books' table.
+     * @param authorId The id of the author holding a book that will be deleted.
+     * @param bookId The id of the book to be deleted.
+     * @return A status code that shows if the delete request was successful or not.
+     */
        @DeleteMapping("/authors/{authorId}/books/{bookId}")
         public ResponseEntity<HashMap<String, String>> deleteAuthorBook(
                 @PathVariable(value = "authorId") Long authorId, @PathVariable(value = "bookId") Long bookId){
