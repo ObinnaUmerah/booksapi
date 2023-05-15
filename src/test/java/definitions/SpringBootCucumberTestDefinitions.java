@@ -31,10 +31,15 @@ public class SpringBootCucumberTestDefinitions {
 
     private static Response response;
 
-    private static Author author = new Author("Paul Bunyon", "A very wise man");
+    private static Author author = new Author("Paul", "Bunyon");
 
-    @When("An author publishes a book")
-    public void authorAddsABookToReadingList() throws JSONException {
+
+    /**
+     * Tests the post request for the authors table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("A user creates an author")
+    public void createAuthor() throws JSONException {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
 
@@ -45,15 +50,21 @@ public class SpringBootCucumberTestDefinitions {
         response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/authors/");
     }
 
-    @Then("Check if the book is published")
-    public void checkIfTheBookIsPublished() {
+    /**
+     * Tests the response from the post request
+     */
+    @Then("The author is created")
+    public void createAuthorTest() {
 
         Assert.assertEquals(201, response.getStatusCode());
     }
 
 
+    /**
+     * Test the get request for the authors' table
+     */
     @Given("There is an author")
-    public void thereIsAnAuthor() {
+    public void getAuthor() {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         request.header("Content-Type", "application/json");
@@ -61,9 +72,12 @@ public class SpringBootCucumberTestDefinitions {
 
     }
 
-
-    @When("The author wants to revise his book")
-    public void theAuthorWantsToReviseHisBook() throws JSONException {
+    /**
+     * Tests the put request for the authors table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user updates the author")
+    public void updateAuthor() throws JSONException {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         JSONObject requestBody = new JSONObject();
@@ -74,27 +88,41 @@ public class SpringBootCucumberTestDefinitions {
     }
 
 
+    /**
+     * Tests the response from the put request
+     */
 
-    @Then("Release new copies of that book")
-    public void releaseNewCopiesOfThatBook() {
+    @Then("The author is updated")
+    public void authorUpdateTest() {
         Assert.assertEquals(200, response.getStatusCode());
     }
 
-    @When("The author now wants to delete the original copy")
-    public void theAuthorNowWantsToDeleteTheOriginalCopy() {
+    /**
+     * Tests the delete request for the authors table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user deletes the author")
+    public void deleteAuthor() {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         request.header("Content-Type", "application/json");
         response = request.body(request.toString()).delete(BASE_URL + port + "/api/authors/1");
     }
 
-    @Then("The book is no longer available for purchase")
-    public void theBookIsNoLongerAvailableForPurchase() {
+    /**
+     * Tests the response from the delete request
+     */
+    @Then("The author is deleted")
+    public void deleteAuthorTest() {
         Assert.assertEquals(200, response.getStatusCode());
     }
 
-    @When("An author writes a book")
-    public void anAuthorWritesABook() throws JSONException {
+    /**
+     * Tests the post request for the books table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user creates a book for a single author")
+    public void createBook() throws JSONException {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
 
@@ -106,15 +134,22 @@ public class SpringBootCucumberTestDefinitions {
         response = request.body(requestBody.toString()).post(BASE_URL + port + "/api/authors/1/books");
     }
 
-    @Then("The book is written")
-    public void theBookIsWritten() {
+    /**
+     * Tests the response from the get request
+     */
+    @Then("The book is created")
+    public void createBookTest() {
         JsonPath jsonPathEvaluator = response.jsonPath();
         String message = jsonPathEvaluator.get("message");
         Assert.assertEquals(201, response.getStatusCode());
     }
 
-    @When("The user wants to retrieve an author's book")
-    public void theUserWantsToRetrieveAnAuthorSBook() {
+    /**
+     * Tests the get request for the books table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user gets a book belonging to a single author")
+    public void getBook() {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
         request.header("Content-Type", "application/json");
@@ -122,14 +157,21 @@ public class SpringBootCucumberTestDefinitions {
     }
 
 
-    @Then("The user has access to the author's book")
-    public void theUserHasAccessToTheAuthorSBook() {
+    /**
+     * Tests the response from the get request
+     */
+    @Then("The book is retrieved")
+    public void getBookTest() {
         Assert.assertEquals(200, response.getStatusCode());
     }
 
 
-    @When("The user wants to edit the author's book")
-    public void theUserWantsToEditTheAuthorSBook() throws JSONException {
+    /**
+     * Tests the put request for the books table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user wants to update a book belonging to a single author")
+    public void updateBook() throws JSONException {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
 
@@ -142,14 +184,21 @@ public class SpringBootCucumberTestDefinitions {
 
     }
 
-    @Then("The author's book is edited")
-    public void theAuthorSBookIsEdited() {
+    /**
+     * Tests the response from the get request
+     */
+    @Then("The book is updated")
+    public void updateBookTest() {
         JsonPath jsonPathEvaluator = response.jsonPath();
         String message = jsonPathEvaluator.get("message");
         Assert.assertEquals(200, response.getStatusCode());
     }
 
-    @When("The user removes the author's book from his library")
+    /**
+     * Tests the delete request for the books table
+     * @throws JSONException Throws exception if there's a JSON serialization.
+     */
+    @When("The user deletes a book belonging to a single author")
     public void theUserRemovesTheAuthorSBookFromHisLibrary() {
         RestAssured.baseURI = BASE_URL;
         RequestSpecification request = RestAssured.given();
@@ -157,7 +206,10 @@ public class SpringBootCucumberTestDefinitions {
         response = request.body(request.toString()).delete(BASE_URL + port + "/api/authors/1/books/1");
     }
 
-    @Then("The book is removed")
+    /**
+     * Tests the response from the delete request
+     */
+    @Then("The book is deleted")
     public void theBookIsRemoved() {
         JsonPath jsonPathEvaluator = response.jsonPath();
         String message = jsonPathEvaluator.get("message");

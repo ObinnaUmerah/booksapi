@@ -11,11 +11,9 @@ public class AuthorDataLoader {
     @Autowired
     AuthorRepository authorRepository;
 
-//    @Override
-//    public void run(String... args) throws Exception {
-//        loadUserData();
-//    }
-
+    /**
+     * This methods loads the user data
+     */
     private void loadUserData() {
         if (authorRepository.count() == 0) {
             Author author1 = new Author("Paul Bunyon", "Some description");
