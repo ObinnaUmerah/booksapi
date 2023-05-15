@@ -41,4 +41,4 @@ As a user, I should be able to delete a book that belongs to a single author.
 
 
 ### ERD Diagram
-![ERD Diagram.png](..%2F..%2F..%2F..%2FPictures%2FCamera%20Roll%2FERD%20Diagram.png)
+![ERD Digaram](ERD.png)
