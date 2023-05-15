@@ -30,24 +30,45 @@ public class AuthorService {
     }
 
 
+    /**
+     * Retrieves all the authors in the database.
+     * @return A list of all the authors
+     */
     public List<Author> getAllAuthors(){
         return authorRepository.findAll();
     }
 
+    /**
+     * Gets the author by their id
+     * @param id The id of the author
+     * @return An author
+     */
     public Optional<Author> getAuthorById(Long id){
         return authorRepository.findById(id);
     }
 
+    /**
+     * Creates an author
+     * @param author An author that the user wants to create
+     * @return The created author
+     */
     public Author createAuthor(Author author){
         authorRepository.save(author);
         return author;
     }
 
+    /**
+     * Updates the author's information
+     * @param authorId
+     * @param authorObject
+     * @return
+     * @throws InformationNotFoundException
+     */
     public Optional<Author> updateAuthor(Long authorId, Author authorObject) throws InformationNotFoundException {
         Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()) {
-            author.get().setName(authorObject.getName());
-            author.get().setDescription(authorObject.getDescription());
+            author.get().setFirstname(authorObject.getFirstname());
+            author.get().setLastname(authorObject.getLastname());
             authorRepository.save(author.get());
             return author;
         } else {
