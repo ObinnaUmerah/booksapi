@@ -44,7 +44,7 @@ public class AuthorController {
             message.put("data", newAuthor);
             return new ResponseEntity<>(message, HttpStatus.CREATED);
         } else {
-            message.put("message", "unable to create a book at this time");
+            message.put("message", "unable to create an author at this time");
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
 
@@ -63,7 +63,7 @@ public class AuthorController {
             message.put("data", author.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            message.put("message", "cannot find book with id " + authorId);
+            message.put("message", "cannot find author with id " + authorId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
@@ -81,10 +81,10 @@ public class AuthorController {
     public ResponseEntity<?> updateAuthor(@PathVariable(value = "authorId") Long authorId, @RequestBody Author authorObject) throws InformationNotFoundException {
         Optional<Author> bookToUpdate = authorService.updateAuthor(authorId, authorObject);
         if (bookToUpdate.isEmpty()) {
-            message.put("message", "cannot find book with id " + authorId);
+            message.put("message", "cannot find author with id " + authorId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } else {
-            message.put("message", "book with id " + authorId + " has been successfully updated");
+            message.put("message", "author with id " + authorId + " has been successfully updated");
             message.put("data", bookToUpdate.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
@@ -100,10 +100,10 @@ public class AuthorController {
     public ResponseEntity<?> deleteAuthor(@PathVariable(value = "authorId") Long authorId) {
         Optional<Author> authorToDelete = authorService.deleteAuthor(authorId);
         if (authorToDelete.isEmpty()) {
-            message.put("message", "cannot find book with id " + authorId);
+            message.put("message", "cannot find author with id " + authorId);
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         } else {
-            message.put("message", "book with id " + authorId + " has been successfully deleted");
+            message.put("message", "author with id " + authorId + " has been successfully deleted");
             message.put("data", authorToDelete.get());
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
