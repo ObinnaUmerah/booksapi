@@ -1,7 +1,7 @@
 # My Book API
 This an API that generates a database of books with their designated authors. This 
 API was designed for a user to hold and store information about the books that
-they possess along with their corresponding authors.Below is a list of the dependencies 
+they possess along with their corresponding authors. Below is a list of the dependencies 
 that you will need to run this application.
 
 ### Tools and Technology
